@@ -1,0 +1,16 @@
+# Node
+node_modules/
+
+# Env
+.env*
+!.env.example
+
+# Logs
+logs/
+
+# Build
+dist/
+
+node_modules/
+dist/
+.env*
