@@ -9,7 +9,8 @@ export async function login(req, res) {
   }
 
   const user = await findUserByEmail(email);
-  if (!user) {
+  if (!user) { 
+
     return res.status(401).json({ message: "Usuário ou senha inválidos" });
   }
 
