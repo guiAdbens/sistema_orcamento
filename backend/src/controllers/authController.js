@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import { findUserByEmail } from "../services/userService.js";
+import { findUserByEmail, getUserRoles } from "../services/userService.js";
 
 export async function login(req, res) {
   const { email, senha } = req.body;
@@ -9,22 +9,26 @@ export async function login(req, res) {
   }
 
   const user = await findUserByEmail(email);
-  if (!user) { 
 
+  if (!user) {
     return res.status(401).json({ message: "Usuário ou senha inválidos" });
   }
 
   const senhaValida = await bcrypt.compare(senha, user.senha);
+
   if (!senhaValida) {
     return res.status(401).json({ message: "Usuário ou senha inválidos" });
   }
+
+  const roles = await getUserRoles(user.id);
 
   return res.json({
     success: true,
     user: {
       id: user.id,
       nome: user.nome,
-      email: user.email
+      email: user.email,
+      roles
     }
   });
 }

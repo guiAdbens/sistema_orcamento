@@ -1,21 +1,37 @@
-import { pool } from "../db.js";
+import { pool } from "../config/db.js";
 
 export async function findUserByEmail(email) {
-  let conn;
+  const conn = await pool.getConnection();
 
   try {
-    conn = await pool.getConnection();
-
     const rows = await conn.query(
-      "SELECT * FROM users WHERE email = ? AND ativo = 1",
+      `
+      SELECT id, nome, email, senha, ativo
+      FROM users
+      WHERE email = ? AND ativo = 1
+      LIMIT 1
+      `,
       [email]
     );
-
-    return rows[0];
-  } catch (error) {
-    console.error("Erro ao buscar usuário:", error);
-    throw error;
+    return rows[0] || null;
   } finally {
-    if (conn) conn.release(); // 🔥 GARANTE liberação mesmo com erro
+    conn.release();
+  }
+}
+
+export async function getUserRoles(userId) {
+  const conn = await pool.getConnection();
+  
+  try {
+  const rows = await conn.query(
+    `SELECT r.id, r.nome, r.nivel
+     FROM roles r
+     JOIN user_roles ur ON ur.role_id = r.id
+     WHERE ur.user_id = ? AND r.ativo = 1`,
+    [userId]
+  );
+  return rows;
+  } finally {
+  conn.release();
   }
 }
