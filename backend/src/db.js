@@ -1,4 +1,4 @@
-import mariadb from "mariadb";
+import * as mariadb from "mariadb"
 
 export const pool = mariadb.createPool({
   host: process.env.DB_HOST,

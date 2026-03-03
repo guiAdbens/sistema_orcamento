@@ -1,7 +1,25 @@
-import { useEffect, useState } from "react";
-import { api } from "../services/api";
+//import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+//import { api } from "../services/api";
+import Sidebar from "../componets/Sidebar";
 
 export default function Profiles() {
+  const { id } = useParams();
+
+  return (
+    <div style={{ display: "flex" }}>
+      <Sidebar />
+
+      <div style={{ padding: "20px", flex: 1 }}>
+        <h1>Perfis</h1>
+        <p>ID recebido: {id}</p>
+      </div>
+    </div>
+  );
+}
+
+
+/*export default function Profiles() {
   const [Profiles, setProfiles] = useState([]);
   const [nome, setNome] = useState("");
   const [descricao, setDescricao] = useState("");
@@ -94,3 +112,4 @@ export default function Profiles() {
     </div>
   );
 }
+*/

@@ -2,10 +2,11 @@ import { useState } from "react";
 import { api } from "../services/api";
 import { AuthContext } from "../context/AuthContext";
 import { useAuth } from "../context/useAuth";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export default function Login() {
   const { login } = useAuth();
-
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
@@ -29,9 +30,7 @@ export default function Login() {
       });
 
       login(response.data.user);
-
-      // futuramente redireciona para dashboard
-      console.log("Login realizado com sucesso");
+      navigate("/")
 
     } catch {
       setErro("Usuário ou senha inválidos");

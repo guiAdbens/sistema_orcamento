@@ -2,7 +2,10 @@ import { useState } from "react";
 import { AuthContext } from "./AuthContext";
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(() => {
+  const [user, setUser] = useState(null)
+  
+  
+  /*useState(() => {
     try {
       const storedUser = localStorage.getItem("user");
       return storedUser ? JSON.parse(storedUser) : null;
@@ -10,7 +13,7 @@ export function AuthProvider({ children }) {
       return null;
     }
   });
-
+*/
   function login(userData) {
     setUser(userData);
     localStorage.setItem("user", JSON.stringify(userData));

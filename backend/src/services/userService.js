@@ -1,4 +1,4 @@
-import { pool } from "../config/db.js";
+import { pool } from "../db.js";
 
 export async function findUserByEmail(email) {
   const conn = await pool.getConnection();

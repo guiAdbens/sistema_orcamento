@@ -1,4 +1,4 @@
-import express from "express";
+import { Router} from "express";
 import {
     listProfile,
     createProfile,
@@ -6,7 +6,7 @@ import {
     deleteProfile,
 } from "../controllers/profileController.js"
 
-const router = express.Router();
+const router = Router();
 
 router.get("/", listProfile);
 router.post("/", createProfile);
