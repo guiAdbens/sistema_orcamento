@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { api } from "../services/api.js";
 
 function Login() {
 
@@ -10,67 +11,39 @@ function Login() {
 
     try {
 
-      const response = await fetch("http://localhost:3000/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          email,
-          senha
-        })
+      const response = await api.post("/login", {
+        email,
+        senha
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-
-        alert("Login realizado!");
-        console.log(data);
-
-      } else {
-
-        alert(data.erro);
-
-      }
+      alert("Login realizado!");
+      console.log(response.data);
 
     } catch (erro) {
 
-      alert("Erro ao conectar com o servidor");
+      alert(erro.response?.data?.erro || "Erro ao conectar com o servidor");
 
     }
   };
 
   return (
-    <div>
+    <form onSubmit={handleLogin}>
 
-      <h2>Login</h2>
+      <input
+        type="email"
+        placeholder="Email"
+        onChange={(e) => setEmail(e.target.value)}
+      />
 
-      <form onSubmit={handleLogin}>
+      <input
+        type="password"
+        placeholder="Senha"
+        onChange={(e) => setSenha(e.target.value)}
+      />
 
-        <input
-          type="email"
-          placeholder="Email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
+      <button>Entrar</button>
 
-        <br />
-
-        <input
-          type="password"
-          placeholder="Senha"
-          onChange={(e) => setSenha(e.target.value)}
-        />
-
-        <br />
-
-        <button type="submit">
-          Entrar
-        </button>
-
-      </form>
-
-    </div>
+    </form>
   );
 }
 

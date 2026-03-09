@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/app.js",
   "scripts": {
-    "dev": "node --env-file=.env.development src/app.js",
+    "dev": "node --env-file=.env.development src/server/server.js",
     "start": "node --env-file=.env.production src/app2.js"
   },
   "keywords": [],
