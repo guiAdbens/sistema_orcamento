@@ -1,84 +1,77 @@
 import { useState } from "react";
-import { api } from "../services/api";
-import { AuthContext } from "../context/AuthContext";
-import { useAuth } from "../context/useAuth";
-import { Navigate, useNavigate } from "react-router-dom";
 
-export default function Login() {
-  const { login } = useAuth();
-  const navigate = useNavigate();
+function Login() {
+
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-  const [erro, setErro] = useState("");
-  const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(e) {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    setErro("");
-
-    if (!email || !senha) {
-      setErro("Informe email e senha");
-      return;
-    }
 
     try {
-      setLoading(true);
 
-      const response = await api.post("/auth/login", {
-        email,
-        senha
+      const response = await fetch("http://localhost:3000/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email,
+          senha
+        })
       });
 
-      login(response.data.user);
-      navigate("/")
+      const data = await response.json();
 
-    } catch {
-      setErro("Usuário ou senha inválidos");
-    } finally {
-      setLoading(false);
+      if (response.ok) {
+
+        alert("Login realizado!");
+        console.log(data);
+
+      } else {
+
+        alert(data.erro);
+
+      }
+
+    } catch (erro) {
+
+      alert("Erro ao conectar com o servidor");
+
     }
-  }
+  };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-6 rounded shadow-md w-80"
-      >
-        <h1 className="text-xl font-bold mb-4 text-center">
-          Login
-        </h1>
+    <div>
 
-        {erro && (
-          <p className="text-red-500 text-sm mb-2">
-            {erro}
-          </p>
-        )}
+      <h2>Login</h2>
+
+      <form onSubmit={handleLogin}>
 
         <input
           type="email"
           placeholder="Email"
-          className="w-full mb-3 p-2 border rounded"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
         />
+
+        <br />
 
         <input
           type="password"
           placeholder="Senha"
-          className="w-full mb-4 p-2 border rounded"
-          value={senha}
-          onChange={e => setSenha(e.target.value)}
+          onChange={(e) => setSenha(e.target.value)}
         />
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 disabled:opacity-50"
-        >
-          {loading ? "Entrando..." : "Entrar"}
+        <br />
+
+        <button type="submit">
+          Entrar
         </button>
+
       </form>
+
     </div>
   );
 }
+
+export default Login;
