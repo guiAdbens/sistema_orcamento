@@ -1,10 +1,14 @@
 import { useState } from "react";
 import { api } from "../services/api.js";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/useAuth.js";
 
 function Login() {
 
   const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
+  const [senha, setSenha] = useState(""); 
+  const navigate = useNavigate()
+  const { login } = useAuth(); 
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -12,15 +16,22 @@ function Login() {
     try {
 
       const response = await api.post("/login", {
-        email,
+        email,  
         senha
       });
 
+    //console.log("Resposta do backend:", response.data);           // ← veja exatamente o que veio
+    
+    login(response.data.user || response.data);                   // ajuste conforme o formato real
+    
+    //console.log("login() chamado → user deve estar no context agora");
+
+      //login(response.data.user)
       alert("Login realizado!");
-      console.log(response.data);
+      navigate("/", { replace: true})
 
     } catch (erro) {
-
+      console.error(erro)
       alert(erro.response?.data?.erro || "Erro ao conectar com o servidor");
 
     }
