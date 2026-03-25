@@ -13,7 +13,7 @@ function App() {
         <Route path="/Login" element={<Login />} />
 
       {/* rotas protegidas */}
-      <Route path="/" element= {
+     <Route path="/" element= {
         <PrivateRoute>
           <Dashboard />
         </PrivateRoute>
@@ -24,3 +24,4 @@ function App() {
 }
 
 export default App;
+
